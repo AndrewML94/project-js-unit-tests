@@ -54,21 +54,27 @@ const createMenu = require('../src/restaurant');
 
 describe('10 - Implemente a função `createMenu`, bem como seus casos de teste', () => {
   it('Verifica se a função `createMenu` tem o comportamento esperado', () => {
-    fail('Teste vazio!');
+    // fail('Teste vazio!');
     // TESTE 1: Verifique se função `createMenu()` retorna um objeto que possui a chave `fetchMenu`, a qual tem como valor uma função.
     // ```
     // const objetoRetornado = createMenu(); // Retorno: { fetchMenu: () => {}, ... }
+    expect(typeof Object.values(createMenu())[0]).toEqual('function');
     // ```
     // TESTE 2: Verifique se 'objetoRetornado.fetchMenu()' retorna um objeto cujas chaves são somente `food` e `drink`, 
     // considerando que a função createMenu() foi chamada com o objeto: `{ food: {}, drink: {} }`.
     // ```
     // const objetoRetornado = createMenu({ food: {}, drink: {} });
     // objetoRetornado.fetchMenu() // Retorno: { food: {}, drink: {}}
+    const option = createMenu({ food: { coxinha: 3.9, sopa: 9.9 }, drink: { agua: 3.9, cerveja: 6.9 } });
+    const result = option.fetchMenu();
+    expect(Object.keys(result)[0]).toBe('food');
+    expect(Object.keys(result)[1]).toBe('drink');
     // ```
     // TESTE 3: Verifique se o menu passado pra função createMenu() é idêntico ao menu recuperado pela função 'objetoRetornado.fetchMenu()'
     // ```
     // const objetoRetornado = createMenu(objetoQualquer);
     // objetoRetornado.fetchMenu() // Retorno: objetoQualquer
+    expect(result).toEqual({ food: { coxinha: 3.9, sopa: 9.9 }, drink: { agua: 3.9, cerveja: 6.9 } });
     // ```
 
     // Agora faça o PASSO 1 no arquivo `src/restaurant.js`.
@@ -78,6 +84,7 @@ describe('10 - Implemente a função `createMenu`, bem como seus casos de teste'
     // ```
     // const objetoRetornado = createMenu(objetoQualquer);
     // objetoRetornado.consumption // Retorno: []
+    expect(Object.values(option)[1]).toEqual([]);
     // ```
 
     // Agora faça o PASSO 2 no arquivo `src/restaurant.js`.
@@ -90,6 +97,9 @@ describe('10 - Implemente a função `createMenu`, bem como seus casos de teste'
     // const objetoRetornado = createMenu(objetoQualquer);
     // objetoRetornado.order("coxinha");
     // objetoRetornado.consumption // Retorno: ["coxinha"]
+    const option2 = createMenu({ food: { coxinha: 3.9, sopa: 9.9 }, drink: { agua: 3.9, cerveja: 6.9 } });
+    option2.order('coxinha');
+    expect(option2.consumption).toEqual(['coxinha']);
     // ```
 
     // Agora faça o PASSO 3 no arquivo `src/restaurant.js`.
@@ -102,7 +112,12 @@ describe('10 - Implemente a função `createMenu`, bem como seus casos de teste'
     // objetoRetornado.order("sopa");
     // objetoRetornado.order("sashimi");
     // objetoRetornado.consumption // Retorno: ["coxinha", "agua", "sopa", "sashimi"]
-    // ```
+    const option3 = createMenu({ food: { coxinha: 3.9, sopa: 9.9 }, drink: { agua: 3.9, cerveja: 6.9 } });
+    option3.order('coxinha');
+    option3.order('agua');
+    option3.order('sopa');
+    option3.order('sashimi');
+    expect(option3.consumption).toEqual(['coxinha', 'agua', 'sopa', 'sashimi']);
 
     // Agora faça o TESTE 7 deste arquivo.
     // --------------------------------------------------------------------------------------
@@ -113,6 +128,11 @@ describe('10 - Implemente a função `createMenu`, bem como seus casos de teste'
     // objetoRetornado.order('agua');
     // objetoRetornado.order('coxinha');
     // objetoRetornado.consumption // Retorno: ['coxinha', 'agua', 'coxinha']
+    const option4 = createMenu({ food: { coxinha: 3.9, sopa: 9.9 }, drink: { agua: 3.9, cerveja: 6.9 } });
+    option4.order('coxinha');
+    option4.order('agua');
+    option4.order('coxinha');
+    expect(option4.consumption).toEqual(['coxinha', 'agua', 'coxinha']);
     // ```
 
     // Agora faça o TESTE 8 deste arquivo.
@@ -124,6 +144,7 @@ describe('10 - Implemente a função `createMenu`, bem como seus casos de teste'
     // objetoRetornado.order('agua');
     // objetoRetornado.order('coxinha');
     // objetoRetornado.pay() // Retorno: somaDosPreçosDosPedidos
+    expect(option4.pay()).toBeCloseTo(12.87);
     // ```
   
     // Agora faça o PASSO 4 no arquivo `src/restaurant.js`.
